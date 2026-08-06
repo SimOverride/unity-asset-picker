@@ -1,0 +1,23 @@
+{
+  "name": "SimOverride.AssetPicker.Editor.Tests",
+  "rootNamespace": "AssetPicker.Editor.Tests",
+  "references": [
+    "SimOverride.AssetPicker.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false,
+  "testAssemblies": true
+}
