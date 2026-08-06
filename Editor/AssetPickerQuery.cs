@@ -101,7 +101,9 @@ namespace AssetPicker.Editor
             foreach (string guid in guids)
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(guid).Replace('\\', '/');
-                UnityEngine.Object[] assets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+                UnityEngine.Object[] assets = requiredType == typeof(GameObject)
+                    ? LoadPrefabRoot(assetPath)
+                    : AssetDatabase.LoadAllAssetsAtPath(assetPath);
                 if (assets == null || assets.Length == 0)
                 {
                     UnityEngine.Object mainAsset = AssetDatabase.LoadMainAssetAtPath(assetPath);
@@ -138,6 +140,17 @@ namespace AssetPicker.Editor
                 .ToList();
             AssetCache[requiredType] = cachedAssets;
             return cachedAssets;
+        }
+
+        /// <summary>
+        /// Prefab 只返回根 GameObject，避免把子物体误当作独立资源条目。
+        /// </summary>
+        private static UnityEngine.Object[] LoadPrefabRoot(string assetPath)
+        {
+            GameObject prefabRoot = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+            return prefabRoot == null
+                ? Array.Empty<UnityEngine.Object>()
+                : new UnityEngine.Object[] { prefabRoot };
         }
 
         private static HashSet<string> FindFoldersWithRequiredAssets(
@@ -193,6 +206,7 @@ namespace AssetPicker.Editor
                 .Where(child => foldersWithRequiredAssets == null ||
                                 foldersWithRequiredAssets.Contains(child))
                 .ToArray();
+            Array.Sort(children, StringComparer.OrdinalIgnoreCase);
             folders.Add(new AssetPickerFolder
             {
                 Path = folderPath,
@@ -201,7 +215,6 @@ namespace AssetPicker.Editor
                 HasChildren = children.Length > 0,
             });
 
-            Array.Sort(children, StringComparer.OrdinalIgnoreCase);
             foreach (string child in children)
             {
                 AddFolder(folders, child, depth + 1, foldersWithRequiredAssets);

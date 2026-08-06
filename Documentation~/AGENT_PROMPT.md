@@ -29,7 +29,7 @@ private void DrawSpriteField()
 }
 ```
 
-`AssetPickerField.Draw` 会保留 Unity 原版 ObjectField，并在右侧增加文件夹入口。点击文件夹入口后，在选择窗口中按文件夹、子文件夹和名称/路径筛选；点击具体资源会通过回调返回结果。材质、Texture2D 和 Prefab 只需要分别传入对应的值、类型和回调转换类型。
+`AssetPickerField.Draw` 会保留 Unity 原版 ObjectField，并在右侧增加文件夹入口。点击文件夹入口后，在选择窗口中按文件夹、子文件夹和名称/路径筛选；点击具体资源会通过回调返回结果。材质、Texture2D 和 Prefab 只需要分别传入对应的值、类型和回调转换类型。筛选 Prefab 时每个 Prefab 只返回根 GameObject，不会把子物体作为独立条目。
 
 如果不需要 Unity 原生对象选择按钮，可以使用 `AssetPickerField.DrawPickerField`。窗口支持资源类型目录过滤、显示全部文件夹开关、小中大缩略图、可拖拽目录栏和搜索目录联动；选择资源后窗口保持打开。
 
