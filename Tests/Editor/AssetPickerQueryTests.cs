@@ -16,6 +16,7 @@ namespace AssetPicker.Editor.Tests
         private const string SpriteFolder = TestRoot + "/Sprites";
         private const string MaterialFolder = TestRoot + "/Materials";
         private const string PrefabFolder = TestRoot + "/Prefabs";
+        private const string ScriptableObjectFolder = TestRoot + "/ScriptableObjects";
         private const string EmptyFolder = TestRoot + "/Empty";
 
         [SetUp]
@@ -26,10 +27,12 @@ namespace AssetPicker.Editor.Tests
             AssetDatabase.CreateFolder(TestRoot, "Sprites");
             AssetDatabase.CreateFolder(TestRoot, "Materials");
             AssetDatabase.CreateFolder(TestRoot, "Prefabs");
+            AssetDatabase.CreateFolder(TestRoot, "ScriptableObjects");
             AssetDatabase.CreateFolder(TestRoot, "Empty");
             CreateSprite("Hero.png");
             CreateMaterial("Hero.mat");
             CreatePrefab("Hero.prefab");
+            CreateScriptableObject("Config.asset");
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
             AssetPickerQuery.ClearCache();
         }
@@ -95,6 +98,23 @@ namespace AssetPicker.Editor.Tests
             Assert.That(prefabAssets[0].Asset, Is.TypeOf<GameObject>());
         }
 
+        /// <summary>
+        /// 确认类型筛选可以找到继承自 ScriptableObject 的自定义资产。
+        /// </summary>
+        [Test]
+        public void FindAssets_FiltersScriptableObjectAssets()
+        {
+            List<AssetPickerEntry> scriptableObjects = AssetPickerQuery.FindAssets(
+                typeof(ScriptableObject),
+                ScriptableObjectFolder,
+                false,
+                string.Empty);
+
+            Assert.That(scriptableObjects, Has.Count.EqualTo(1));
+            Assert.That(scriptableObjects[0].Name, Is.EqualTo("Config"));
+            Assert.That(scriptableObjects[0].Asset, Is.TypeOf<TestAsset>());
+        }
+
         private static bool HasFolder(List<AssetPickerFolder> folders, string path)
         {
             foreach (AssetPickerFolder folder in folders)
@@ -142,11 +162,21 @@ namespace AssetPicker.Editor.Tests
             UnityEngine.Object.DestroyImmediate(root);
         }
 
+        /// <summary>
+        /// 创建自定义 ScriptableObject 资产，验证基础类型筛选行为。
+        /// </summary>
+        private static void CreateScriptableObject(string fileName)
+        {
+            TestAsset asset = ScriptableObject.CreateInstance<TestAsset>();
+            AssetDatabase.CreateAsset(asset, ScriptableObjectFolder + "/" + fileName);
+        }
+
         private static void CleanupAssets()
         {
             AssetPickerQuery.ClearCache();
             AssetDatabase.DeleteAsset(TestRoot);
             AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
         }
+
     }
 }

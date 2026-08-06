@@ -7,7 +7,7 @@
 - 本包是独立的 Unity Editor UPM 包，只能被 Editor 程序集引用。
 - 不要在运行时程序集、MonoBehaviour 运行时代码、ReactUI、Node.js、浏览器运行时或 `tongqubase-unity-ui-tool` 中引用本包。
 - 不要修改项目无关的脚本，也不要尝试全局替换 Unity 内部的所有 ObjectField。
-- Unity 的内置组件或第三方组件只有在项目明确要求时才编写对应的 `CustomEditor`；ScriptableObject 或自定义脚本的资源字段不会被本包自动接管。
+- 本包已经内置 SpriteRenderer 和 UGUI Image 的 `CustomEditor`，不要在接入项目中重复编写这两个组件的 Editor；第三方组件、其他 Unity 内置组件、ScriptableObject 或自定义脚本的资源字段不会被本包自动接管。
 
 ## 可用接口
 
@@ -29,7 +29,7 @@ private void DrawSpriteField()
 }
 ```
 
-`AssetPickerField.Draw` 会保留 Unity 原版 ObjectField，并在右侧增加文件夹入口。点击文件夹入口后，在选择窗口中按文件夹、子文件夹和名称/路径筛选；点击具体资源会通过回调返回结果。材质、Texture2D 和 Prefab 只需要分别传入对应的值、类型和回调转换类型。筛选 Prefab 时每个 Prefab 只返回根 GameObject，不会把子物体作为独立条目。
+`AssetPickerField.Draw` 会保留 Unity 原版 ObjectField，并在右侧增加文件夹入口。点击文件夹入口后，在选择窗口中按文件夹、子文件夹和名称/路径筛选；点击具体资源会通过回调返回结果。材质、Texture2D、Prefab 和 ScriptableObject 只需要分别传入对应的值、类型和回调转换类型。筛选 Prefab 时每个 Prefab 只返回根 GameObject，不会把子物体作为独立条目。
 
 如果不需要 Unity 原生对象选择按钮，可以使用 `AssetPickerField.DrawPickerField`。窗口支持资源类型目录过滤、显示全部文件夹开关、小中大缩略图、可拖拽目录栏和搜索目录联动；选择资源后窗口保持打开。
 
@@ -44,6 +44,17 @@ AssetPicker.Open(
 ```
 
 包内窗口没有“选择”和“取消”按钮，点击资源即视为选择，回调执行后窗口保持打开。资源索引按类型缓存，项目变化或手动刷新后清理；不要在调用方重复实现全项目资源扫描。
+
+## 内置组件集成
+
+包导入后默认使用自定义的 SpriteRenderer 和 UGUI Image Inspector：
+
+- SpriteRenderer 只替换 `Sprite` 字段，保留 Unity 原版面板的其他属性和布局；
+- Image 只替换 `Source Image` 字段，保留 Unity 原版面板的其他属性和布局；
+- 两者都支持多对象编辑、拖拽资源和 Undo；
+- 可通过 `Tools > 项目资源选择器 > SpriteRenderer` 或 `Image` 菜单切回 Unity 原版 Editor。
+
+如果目标是其他组件或自定义资源字段，才需要在目标 Editor 程序集中主动调用公开 API。
 
 ## 编写自定义 Inspector 时的规则
 

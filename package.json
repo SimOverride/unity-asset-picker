@@ -1,7 +1,7 @@
 {
   "name": "com.simoverride.asset-picker",
   "displayName": "Unity 资源文件夹选择器",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "unity": "2022.3",
   "description": "为 Unity 项目提供按文件夹筛选 Sprite、材质等资源的独立编辑器选择器。",
   "keywords": [

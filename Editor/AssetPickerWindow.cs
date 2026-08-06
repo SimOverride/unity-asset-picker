@@ -22,6 +22,7 @@ namespace AssetPicker.Editor
             typeof(Material),
             typeof(Texture2D),
             typeof(GameObject),
+            typeof(ScriptableObject),
         };
         private static readonly string[] SelectableTypeNames =
         {
@@ -29,6 +30,7 @@ namespace AssetPicker.Editor
             "Material",
             "Texture2D",
             "Prefab",
+            "ScriptableObject",
         };
 
         private Type requiredType;
@@ -697,5 +699,3 @@ namespace AssetPicker.Editor
         }
     }
 }
-
-

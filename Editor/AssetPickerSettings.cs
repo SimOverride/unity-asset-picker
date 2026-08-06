@@ -13,6 +13,8 @@ namespace AssetPicker.Editor
         private const string ShowOnlyMatchingFoldersKey = "SimOverride.AssetPicker.ShowOnlyMatchingFolders";
         private const string ThumbnailSizeIndexKey = "SimOverride.AssetPicker.ThumbnailSizeIndex";
         private const string FolderPanelWidthKey = "SimOverride.AssetPicker.FolderPanelWidth";
+        private const string SpriteRendererEditorKey = "SimOverride.AssetPicker.UseSpriteRendererEditor";
+        private const string ImageEditorKey = "SimOverride.AssetPicker.UseImageEditor";
         private const string DefaultFolder = "Assets";
 
         public static bool ShowOnlyMatchingFolders
@@ -31,6 +33,24 @@ namespace AssetPicker.Editor
         {
             get => Mathf.Clamp(EditorPrefs.GetFloat(FolderPanelWidthKey, 230f), 180f, 420f);
             set => EditorPrefs.SetFloat(FolderPanelWidthKey, Mathf.Clamp(value, 180f, 420f));
+        }
+
+        /// <summary>
+        /// 控制 SpriteRenderer 是否使用资源选择器 Inspector。
+        /// </summary>
+        public static bool UseCustomSpriteRendererEditor
+        {
+            get => EditorPrefs.GetBool(SpriteRendererEditorKey, true);
+            set => EditorPrefs.SetBool(SpriteRendererEditorKey, value);
+        }
+
+        /// <summary>
+        /// 控制 Image 是否使用资源选择器 Inspector。
+        /// </summary>
+        public static bool UseCustomImageEditor
+        {
+            get => EditorPrefs.GetBool(ImageEditorKey, true);
+            set => EditorPrefs.SetBool(ImageEditorKey, value);
         }
 
         public static string GetLastFolder(Type assetType)

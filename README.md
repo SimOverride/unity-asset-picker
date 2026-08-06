@@ -17,6 +17,7 @@
 - 支持拖拽调整文件夹面板宽度；
 - 点击资源即可完成选择，窗口不会自动关闭；
 - 不显示额外的“选择”和“取消”按钮，行为与 Unity 原版资源选择器一致；
+- 支持在窗口内筛选自定义 ScriptableObject 资产；
 - 按资源类型保存最近浏览的文件夹、缩略图大小和目录栏宽度；
 - 对资源索引进行缓存，在项目资源变化或手动刷新时自动清理；
 - 筛选 Prefab 时每个 Prefab 只显示根 GameObject，不展开子物体条目；
@@ -27,7 +28,8 @@
 - Unity 2022.3 及以上版本；
 - 仅在 Unity Editor 中运行，不包含运行时代码依赖；
 - 不依赖 React、Node.js、浏览器或其他项目级 UI 框架；
-- 当前包不会修改或替换 Unity 内置的 Sprite Renderer、Image 或其他 Inspector。
+- 导入后默认接管 SpriteRenderer 和 UGUI Image 的自定义 Inspector；
+- 不会接管第三方组件或其他未列出的 Unity 内置组件 Inspector。
 
 ## 安装
 
@@ -81,9 +83,27 @@ https://github.com/<owner>/<repository>.git?path=/asset-picker
 
 窗口默认筛选 Sprite。资源类型可以直接在窗口内部切换，不需要为每种类型创建菜单项。
 
+### SpriteRenderer 和 Image 的内置接入
+
+包内已包含 SpriteRenderer 和 UGUI Image 的自定义 Inspector，导入后无需额外脚本即可使用：
+
+- SpriteRenderer 保持 Unity 原版面板结构，只替换 `Sprite` 字段；
+- Image 保持 Unity 原版面板结构，只替换 `Source Image` 字段；
+- 两个 Inspector 都支持多对象编辑、拖拽资源和 Undo；
+- 选择窗口中的资源被点击后会直接写回组件，窗口保持打开。
+
+可以通过以下菜单分别切换项目 Inspector 和 Unity 原版 Inspector：
+
+- `Tools > 项目资源选择器 > SpriteRenderer > 使用项目资源选择器`；
+- `Tools > 项目资源选择器 > SpriteRenderer > 使用 Unity 原版 Editor`；
+- `Tools > 项目资源选择器 > Image > 使用项目资源选择器`；
+- `Tools > 项目资源选择器 > Image > 使用 Unity 原版 Editor`。
+
+切换状态保存在当前用户的 Unity `EditorPrefs` 中，并会立即刷新已打开的 Inspector。
+
 ## 窗口操作
 
-- 资源类型：选择 Sprite、Material、Texture2D 或 Prefab；
+- 资源类型：选择 Sprite、Material、Texture2D、Prefab 或 ScriptableObject；
 - 搜索：按资源名称或资源路径过滤；
 - 包含子文件夹：决定当前文件夹是否包含下级文件夹资源；
 - 仅显示匹配文件夹：隐藏不包含当前类型资源的文件夹；
@@ -108,13 +128,13 @@ https://github.com/<owner>/<repository>.git?path=/asset-picker
 
 ## 支持范围与限制
 
-- 窗口内置类型为 Sprite、Material、Texture2D 和 Prefab；
+- 窗口内置类型为 Sprite、Material、Texture2D、Prefab 和 ScriptableObject；
 - API 可以传入其他继承自 `UnityEngine.Object` 的类型，但是否能被 Unity `AssetDatabase` 正确检索取决于该资源类型的导入方式；
 - 当前只支持单选，不支持多选；
 - 当前选择的是具体资源，不是文件夹引用；
 - 资源扫描范围固定为 `Assets`；
-- 工具不会自动替换第三方 Inspector 或 Unity 内置 Inspector 中的原生选择器，需要在目标自定义 Editor 中接入公开 API；
-- 包不包含 Sprite Renderer、UGUI Image 或其他业务组件的自定义 Editor。
+- 工具不会自动替换第三方组件或其他未列出的 Unity 内置 Inspector；需要接入其他组件时，请在目标自定义 Editor 中调用公开 API；
+- 包内置的 SpriteRenderer 和 Image Inspector 依赖 Unity 序列化属性，并通过反射调用 Unity 原版 Editor 作为切换回退路径；不同 Unity 版本可能存在字段或内部类型差异。
 
 ## 许可证
 

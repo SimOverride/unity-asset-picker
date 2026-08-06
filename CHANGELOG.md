@@ -1,5 +1,13 @@
 # 更新日志
 
+## 0.1.5
+
+- 将 SpriteRenderer 和 UGUI Image 的自定义 Inspector 纳入独立包。
+- 导入包后默认替换这两个组件的 Sprite 选择字段，并保留 Unity 原版面板布局。
+- 增加 SpriteRenderer/Image 与 Unity 原版 Editor 的菜单切换选项。
+- 增加 ScriptableObject 类型筛选，可直接浏览自定义 ScriptableObject 资产。
+- 增加 ScriptableObject 类型筛选回归测试。
+
 ## 0.1.4
 
 - 修复 Prefab 扫描将每个子物体当作独立条目并导致列表卡顿的问题，现在每个 Prefab 只显示根对象。
