@@ -671,12 +671,7 @@ namespace AssetPicker.Editor
 
         private string GetInitialFolder(Type objectType, UnityEngine.Object current)
         {
-            // 已经使用过该类型的选择器时，优先恢复上次关闭时保存的位置。
-            if (AssetPickerSettings.TryGetLastFolder(objectType, out string lastFolder))
-            {
-                return lastFolder;
-            }
-
+            // 资源字段已有项目资源时，优先定位到该资源所在文件夹，便于继续查找同目录资源。
             if (current != null)
             {
                 string assetPath = AssetDatabase.GetAssetPath(current).Replace('\\', '/');
@@ -685,6 +680,12 @@ namespace AssetPicker.Editor
                 {
                     return currentFolder;
                 }
+            }
+
+            // 属性为空，或当前对象不是可定位的项目资源时，恢复该类型上次关闭时的位置。
+            if (AssetPickerSettings.TryGetLastFolder(objectType, out string lastFolder))
+            {
+                return lastFolder;
             }
 
             return AssetPickerSettings.GetLastFolder(objectType);
