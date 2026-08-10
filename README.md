@@ -93,12 +93,10 @@ https://github.com/<owner>/<repository>.git?path=/asset-picker
 - 两个 Inspector 都支持多对象编辑、拖拽资源和 Undo；
 - 选择窗口中的资源被点击后会直接写回组件，窗口保持打开。
 
-可以通过以下菜单分别切换项目 Inspector 和 Unity 原版 Inspector：
+可以通过以下两个菜单勾选切换项目 Inspector 和 Unity 原版 Inspector。勾选表示使用项目资源选择器，取消勾选表示使用 Unity 原版 Inspector：
 
-- `Tools > 项目资源选择器 > SpriteRenderer > 使用项目资源选择器`；
-- `Tools > 项目资源选择器 > SpriteRenderer > 使用 Unity 原版 Editor`；
-- `Tools > 项目资源选择器 > Image > 使用项目资源选择器`；
-- `Tools > 项目资源选择器 > Image > 使用 Unity 原版 Editor`。
+- `Tools > 项目资源选择器 > SpriteRenderer 使用项目资源选择器`；
+- `Tools > 项目资源选择器 > Image 使用项目资源选择器`。
 
 切换状态保存在当前用户的 Unity `EditorPrefs` 中，并会立即刷新已打开的 Inspector。
 

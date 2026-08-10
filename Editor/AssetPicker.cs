@@ -9,14 +9,10 @@ namespace AssetPicker.Editor
     /// </summary>
     public static class AssetPicker
     {
-        private const string UseProjectSpriteRendererEditorMenu =
-            "Tools/项目资源选择器/SpriteRenderer/使用项目资源选择器";
-        private const string UseUnitySpriteRendererEditorMenu =
-            "Tools/项目资源选择器/SpriteRenderer/使用 Unity 原版 Editor";
-        private const string UseProjectImageEditorMenu =
-            "Tools/项目资源选择器/Image/使用项目资源选择器";
-        private const string UseUnityImageEditorMenu =
-            "Tools/项目资源选择器/Image/使用 Unity 原版 Editor";
+        private const string SpriteRendererEditorMenu =
+            "Tools/项目资源选择器/SpriteRenderer 使用项目资源选择器";
+        private const string ImageEditorMenu =
+            "Tools/项目资源选择器/Image 使用项目资源选择器";
 
         public static void Open(
             Type objectType,
@@ -49,67 +45,37 @@ namespace AssetPicker.Editor
                 true);
         }
 
-        [MenuItem(UseProjectSpriteRendererEditorMenu)]
-        private static void UseProjectSpriteRendererEditor()
+        [MenuItem(SpriteRendererEditorMenu)]
+        private static void ToggleSpriteRendererEditor()
         {
-            AssetPickerSettings.UseCustomSpriteRendererEditor = true;
+            AssetPickerSettings.UseCustomSpriteRendererEditor =
+                !AssetPickerSettings.UseCustomSpriteRendererEditor;
             RefreshInspectorViews();
         }
 
-        [MenuItem(UseProjectSpriteRendererEditorMenu, true)]
-        private static bool ValidateUseProjectSpriteRendererEditor()
+        [MenuItem(SpriteRendererEditorMenu, true)]
+        private static bool ValidateSpriteRendererEditorMenu()
         {
             Menu.SetChecked(
-                UseProjectSpriteRendererEditorMenu,
+                SpriteRendererEditorMenu,
                 AssetPickerSettings.UseCustomSpriteRendererEditor);
             return true;
         }
 
-        [MenuItem(UseUnitySpriteRendererEditorMenu)]
-        private static void UseUnitySpriteRendererEditor()
+        [MenuItem(ImageEditorMenu)]
+        private static void ToggleImageEditor()
         {
-            AssetPickerSettings.UseCustomSpriteRendererEditor = false;
+            AssetPickerSettings.UseCustomImageEditor =
+                !AssetPickerSettings.UseCustomImageEditor;
             RefreshInspectorViews();
         }
 
-        [MenuItem(UseUnitySpriteRendererEditorMenu, true)]
-        private static bool ValidateUseUnitySpriteRendererEditor()
+        [MenuItem(ImageEditorMenu, true)]
+        private static bool ValidateImageEditorMenu()
         {
             Menu.SetChecked(
-                UseUnitySpriteRendererEditorMenu,
-                !AssetPickerSettings.UseCustomSpriteRendererEditor);
-            return true;
-        }
-
-        [MenuItem(UseProjectImageEditorMenu)]
-        private static void UseProjectImageEditor()
-        {
-            AssetPickerSettings.UseCustomImageEditor = true;
-            RefreshInspectorViews();
-        }
-
-        [MenuItem(UseProjectImageEditorMenu, true)]
-        private static bool ValidateUseProjectImageEditor()
-        {
-            Menu.SetChecked(
-                UseProjectImageEditorMenu,
+                ImageEditorMenu,
                 AssetPickerSettings.UseCustomImageEditor);
-            return true;
-        }
-
-        [MenuItem(UseUnityImageEditorMenu)]
-        private static void UseUnityImageEditor()
-        {
-            AssetPickerSettings.UseCustomImageEditor = false;
-            RefreshInspectorViews();
-        }
-
-        [MenuItem(UseUnityImageEditorMenu, true)]
-        private static bool ValidateUseUnityImageEditor()
-        {
-            Menu.SetChecked(
-                UseUnityImageEditorMenu,
-                !AssetPickerSettings.UseCustomImageEditor);
             return true;
         }
 

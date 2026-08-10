@@ -8,6 +8,7 @@
 - 增加 ScriptableObject 类型筛选，可直接浏览自定义 ScriptableObject 资产。
 - 增加 ScriptableObject 类型筛选回归测试。
 - 调整打开窗口时的文件夹定位：已有资源时定位到资源所在文件夹，空属性时恢复上次浏览位置。
+- 将 SpriteRenderer 和 Image 的 Inspector 切换菜单改为与“打开选择窗口”同级的两个可勾选项。
 
 ## 0.1.4
 
